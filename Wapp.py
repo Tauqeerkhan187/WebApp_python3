@@ -13,6 +13,8 @@ from config import (
     N_POINTS, MAX_EXPRS
 )
 from plotter.plotting import make_plot_png
+from plotter.llm_mistral import nl_to_exprs
+
 
 app = Flask(__name__)
 app.secret_key = "dev-only-secret"  # required for session storage
@@ -21,7 +23,7 @@ app.secret_key = "dev-only-secret"  # required for session storage
 @app.route("/", methods=["GET", "POST"])
 def index():
     # Defaults (also used to preserve input after POST)
-    exprs = DEFAULT_EXPRS
+    request_text = "Please plot a sine wave function!"
     a = DEFAULT_A
     b = DEFAULT_B
     color = DEFAULT_COLOR
@@ -34,7 +36,8 @@ def index():
 
     if request.method == "POST":
         # Read user form input (preserved by rendering them back)
-        exprs = request.form.get("exprs", DEFAULT_EXPRS)
+        request_text = request.form.get("request", "").strip()
+        exprs = nl_to_exprs(request_text)
         a = request.form.get("a", DEFAULT_A)
         b = request.form.get("b", DEFAULT_B)
         color = request.form.get("color", DEFAULT_COLOR)
