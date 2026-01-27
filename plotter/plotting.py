@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 
 from .safe_eval import compile_expr, eval_on_x
 
-def parse_expressions(text: str. max_exprs: int):
+def parse_expressions(text: str, max_exprs: int):
     """
     Parse one expr per line
     ignore empty line and comments.

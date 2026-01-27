@@ -40,7 +40,7 @@ ALLOWED_NODES = (
     ast.Attribute,
 
     #Operators
-    ast.Add, ast.Sub, ast.Mult. ast.Div, ast.Mod, ast.Pow,
+    ast.Add, ast.Sub, ast.Mult, ast.Div, ast.Mod, ast.Pow,
     ast.UAdd, ast.USub,
 )
 

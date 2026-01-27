@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Expression Plotter</title>
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; margin: 24px; }
+    .row { display: flex; gap: 16px; flex-wrap: wrap; align-items: end; }
+    label { display: block; font-size: 14px; margin-bottom: 6px; }
+    input, select, textarea { padding: 8px; font-size: 14px; width: 360px; }
+    textarea { height: 120px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+    .small { width: 120px; }
+    button, a.btn { padding: 10px 14px; font-size: 14px; cursor: pointer; border-radius: 10px; border: 1px solid #ddd; background: #fafafa; text-decoration: none; color: #111; display: inline-block; }
+    button:hover, a.btn:hover { background: #f0f0f0; }
+    .box { margin-top: 18px; padding: 12px; border: 1px solid #ddd; border-radius: 10px; }
+    .error { color: #b00020; white-space: pre-wrap; }
+    .warn { color: #8a6d00; white-space: pre-wrap; }
+    img { max-width: 100%; height: auto; border: 1px solid #eee; border-radius: 10px; }
+    code { background: #f6f6f6; padding: 2px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Python Expression Plotter</h1>
+
+  <div class="box">
+    <form method="post">
+      <div class="row">
+        <div>
+          <label>Expressions (one per line, use <code>x</code>)</label>
+          <textarea name="exprs">{{ exprs|e }}</textarea>
+          <div style="font-size: 12px; color: #555; margin-top: 6px;">
+            Allowed: <code>x</code>, <code>np</code>, <code>math</code>, operators + - * / **, parentheses, functions like <code>math.sin(x)</code>
+          </div>
+        </div>
+
+        <div>
+          <label>a</label>
+          <input class="small" name="a" value="{{ a|e }}" />
+          <div style="height: 10px;"></div>
+          <label>b</label>
+          <input class="small" name="b" value="{{ b|e }}" />
+          <div style="height: 10px;"></div>
+          <label>Color</label>
+          <select name="color">
+            {% for c in colors %}
+              <option value="{{ c }}" {% if c == color %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+          </select>
+          <div style="height: 12px;"></div>
+          <button type="submit">Make a plot</button>
+
+          {% if can_download %}
+            <div style="height: 10px;"></div>
+            <a class="btn" href="/download">Download PNG</a>
+          {% endif %}
+        </div>
+      </div>
+    </form>
+  </div>
+
+  {% if error %}
+    <div class="box error"><strong>Error:</strong><br/>{{ error }}</div>
+  {% endif %}
+
+  {% if warnings %}
+    <div class="box warn"><strong>Warnings:</strong><br/>{{ warnings }}</div>
+  {% endif %}
+
+  {% if img_data %}
+    <div class="box">
+      <div style="margin-bottom: 10px; color:#444;">
+        <strong>interval:</strong> [{{ a2 }}, {{ b2 }}] |
+        <strong>color:</strong> {{ color }} |
+        <strong>plots:</strong> {{ exprs_display|length }}
+      </div>
+      <img src="data:image/png;base64,{{ img_data }}" alt="plot" />
+    </div>
+  {% endif %}
+</body>
+</html>
+
