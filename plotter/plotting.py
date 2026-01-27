@@ -18,7 +18,7 @@ def parse_expressions(text: str, max_exprs: int):
     exprs = []
     for line in (text or "").splitlines():
         s = line.strip()
-        if not s or s.startwith("#"):
+        if not s or s.startswith("#"):
             continue
         exprs.append(s)
 
@@ -52,7 +52,7 @@ def make_plot_png(expr_text, a, b, color, n_points, max_exprs):
     """
 
     a, b = validate_interval(a, b)
-    exprs = parse_expressions(exprs_text, max_exprs)
+    exprs = parse_expressions(expr_text, max_exprs)
 
     compiled = []
     labels = []
