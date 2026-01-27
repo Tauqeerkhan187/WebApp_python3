@@ -4,7 +4,7 @@
 
 import os
 from dotenv import load_dotenv
-from mistral import Mistral
+from mistralai import Mistral
 
 SYSTEM_PROMPT = """You convert user plot requests into safe Python expressions using x.
 Return ONLY expressions, one per line. No prose, no code blocks.
