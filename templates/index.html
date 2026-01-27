@@ -20,17 +20,18 @@
   </style>
 </head>
 <body>
-  <h1>Python Expression Plotter</h1>
+  <h1>LLM Python Expression Plotter</h1>
 
   <div class="box">
     <form method="post">
       <div class="row">
         <div>
-          <label>Expressions (one per line, use <code>x</code>)</label>
-          <textarea name="exprs">{{ exprs|e }}</textarea>
-          <div style="font-size: 12px; color: #555; margin-top: 6px;">
-            Allowed: <code>x</code>, <code>np</code>, <code>math</code>, operators + - * / **, parentheses, functions like <code>math.sin(x)</code>
-          </div>
+          <label>What should I plot?</label>
+            <textarea name="request">{{ request_text|e }}</textarea>
+            <div style="font-size:12px;color:#555;margin-top:6px;">
+            Example: "Plot sine and cosine" or
+            "Plot a parabola x^2 - 3x + 2"
+            </div>
         </div>
 
         <div>
