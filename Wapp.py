@@ -24,9 +24,11 @@ app.secret_key = "dev-only-secret"  # required for session storage
 def index():
     # Defaults (also used to preserve input after POST)
     request_text = "Please plot a sine wave function!"
+    exprs = ""
     a = DEFAULT_A
     b = DEFAULT_B
     color = DEFAULT_COLOR
+
 
     img_data = None
     error = None
@@ -35,19 +37,22 @@ def index():
     a2 = b2 = None
 
     if request.method == "POST":
-        # Read user form input (preserved by rendering them back)
+        # Read user form input
         request_text = request.form.get("request", "").strip()
         exprs = nl_to_exprs(request_text)
         a = request.form.get("a", DEFAULT_A)
         b = request.form.get("b", DEFAULT_B)
         color = request.form.get("color", DEFAULT_COLOR)
 
-        # Hard-validate color against predefined options
+        # validate color against predefined options
         if color not in COLORS:
             color = DEFAULT_COLOR
 
         try:
-            # Build plot bytes from validated inputs
+            # LLM convert natural lang to expr
+            exprs = nl_to_exprs(request_text)
+
+            # Build plot bytes from validated inputs (still safe)
             png, exprs_display, (a2, b2), warns = make_plot_png(
                 expr_text=exprs,
                 a=float(a),
@@ -82,6 +87,7 @@ def index():
     return render_template(
         "index.html",
         colors=COLORS,
+        request_text=request_text, # for new UI
         exprs=exprs,
         a=a,
         b=b,
