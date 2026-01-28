@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="card">
+    <h2>Find a Friend for the Moment</h2>
+    <p class="muted">
+      Enter a nickname + message. We embed it via <code>mistral-embed</code>, find top-3 by cosine similarity,
+      then ask an LLM to filter which ones are truly relevant.
+      Data persists in <code>store.json</code>. Logs go to <code>app.log</code>.
+    </p>
+
+    <form method="post">
+      <label>Nickname</label>
+      <input name="nickname" placeholder="e.g., TK" required />
+
+      <br/><br/>
+      <label>Your message (what you're thinking/doing now)</label>
+      <textarea name="text" placeholder="e.g., Looking for someone to play badminton with..." required></textarea>
+
+      <br/><br/>
+      <button type="submit">Find a friend</button>
+    </form>
+  </div>
+
+  {% if new_item %}
+    <div class="card ok">
+      <h3>Your message was added ✅</h3>
+      <div><b>{{ new_item.nickname }}</b>: {{ new_item.text }}</div>
+      <div class="muted">Saved at {{ new_item.created_at }}</div>
+    </div>
+
+    <div class="card">
+      <h3>Top-3 by cosine similarity</h3>
+      {% if not top3 %}
+        <p class="muted">(No previous messages yet.)</p>
+      {% else %}
+        <ul>
+          {% for sim, item in top3 %}
+            <li>
+              <b>{{ "%.4f"|format(sim) }}</b> — <b>{{ item.nickname }}</b>: {{ item.text }}
+              <div class="muted">created: {{ item.created_at }}</div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+
+    <div class="card">
+      <h3>LLM-filtered friend recommendations</h3>
+      {% if not recs %}
+        <p class="muted">No strong matches found (LLM says the top-3 aren’t truly aligned).</p>
+      {% else %}
+        <ul>
+          {% for r in recs %}
+            <li>
+              <b>{{ r.nickname }}</b> (sim={{ "%.4f"|format(r.similarity) }})
+              <div>{{ r.message }}</div>
+              <div class="muted">Reason: {{ r.reason }}</div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="card">
+    <h3>Recent messages</h3>
+    {% if not messages %}
+      <p class="muted">(none yet)</p>
+    {% else %}
+      <ul>
+        {% for m in messages %}
+          <li><b>{{ m.nickname }}</b>: {{ m.text }} <span class="muted">({{ m.created_at }})</span></li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+{% endblock %}

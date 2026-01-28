@@ -1,0 +1,7 @@
+2026-01-28 09:08:51,245 INFO: NEW_MESSAGE nickname='TK' text='Looking to fix my sleep schedule.'
+2026-01-28 09:08:51,246 INFO: TOP3 none (no existing messages yet)
+2026-01-28 09:09:32,645 INFO: NEW_MESSAGE nickname='Ryder' text='Looking to go to a sleep over'
+2026-01-28 09:09:32,646 INFO: TOP3 rank=1 sim=0.727653 nick='TK' text='Looking to fix my sleep schedule.'
+2026-01-28 09:10:12,924 INFO: NEW_MESSAGE nickname='STK' text='Looking to go to the park.'
+2026-01-28 09:10:12,924 INFO: TOP3 rank=1 sim=0.734265 nick='Ryder' text='Looking to go to a sleep over'
+2026-01-28 09:10:12,924 INFO: TOP3 rank=2 sim=0.696326 nick='TK' text='Looking to fix my sleep schedule.'

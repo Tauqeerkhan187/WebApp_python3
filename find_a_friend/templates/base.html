@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>{{ title or "Find a Friend for the Moment" }}</title>
+  <style>
+    body { margin:0; font-family: Arial, sans-serif; background:#0b0f14; color:#e9eef5; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 18px; }
+    .card { background:#111826; border:1px solid #22304a; border-radius: 10px; padding: 14px; margin: 14px 0; }
+    input, textarea { width: 100%; padding: 10px; border-radius: 8px; border:1px solid #22304a; background:#0b0f14; color:#e9eef5; }
+    textarea { min-height: 110px; }
+    button { padding: 10px 14px; border-radius: 8px; border:1px solid #22304a; background:#182338; color:#e9eef5; cursor: pointer; }
+    button:hover { background:#1c2a44; }
+    .muted { color:#a9b4c2; font-size: 13px; }
+    .ok { border-left: 5px solid #3ddc97; }
+    .err { border-left: 5px solid #ff6b6b; }
+    code { background:#0b0f14; padding:2px 6px; border-radius: 6px; border:1px solid #22304a; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    {% with msgs = get_flashed_messages(with_categories=True) %}
+      {% if msgs %}
+        {% for cat, msg in msgs %}
+          <div class="card {{ 'ok' if cat=='ok' else 'err' }}">
+            <b>{{ '✅' if cat=='ok' else '❌' }}</b> {{ msg }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>
